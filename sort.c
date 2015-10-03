@@ -9,6 +9,11 @@ __attribute__ ((weak))
 int compare(int a, int b) {
 	    return a - b;
 }
+int compare_function(void * a, void * p){
+	int* a1 = a;
+	int* p1 = p;
+	return compare(*a1, *p1);
+}
 
 void bubble_sort(int *numbers, unsigned count) {
 	int temp;
@@ -57,5 +62,11 @@ void insertion_sort(int *numbers, unsigned count) {
 	memcpy(numbers, new, count*sizeof(int));
 }
 
-sorting_fn sorting_fns[] = {bubble_sort, insertion_sort, NULL};
+
+void q_sort(int *numbers, unsigned count){
+	__compar_fn_t cmp = (__compar_fn_t) compare_function;
+	qsort(numbers, count, sizeof(int), cmp);
+} 
+
+sorting_fn sorting_fns[] = {bubble_sort, insertion_sort, q_sort, NULL};
 
